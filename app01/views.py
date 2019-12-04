@@ -111,3 +111,35 @@ class BookDetailView(APIView):
     def delete(self,request,id):
         Book.objects.filter(pk=id).delete()
         return Response()
+
+from rest_framework import viewsets
+class AuthorModelView(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorModelSerializers
+
+def get_random_str(user):
+    import random,time,hashlib
+    ctime = str(time.time())
+    md5 = hashlib.md5(bytes(user,encoding='utf8'))
+    md5.update(bytes(ctime,encoding='utf8'))
+    return md5.hexdigest()
+
+
+from django.http import JsonResponse
+class LoginView(APIView):
+    def post(self,request):
+        name = request.data.get("name")
+        password = request.data.get("password")
+        response = {"state_code":1000,"msg":None}
+        user = User.objects.filter(name=name,password=password).first()
+        print(user)
+        if user:
+            random_str = get_random_str(user.name)
+            token = Token.objects.update_or_create(user=user,defaults={"token":random_str})
+            response["token"] = random_str
+            response["msg"] = "登入成功"
+        else:
+            response["state_code"] = 1001
+            response["msg"] = "用户名或者密码错误"
+        # return Response(json.dumps(response,ensure_ascii=False))
+        return JsonResponse(response, json_dumps_params={"ensure_ascii": False})

@@ -22,4 +22,7 @@ urlpatterns = [
     url(r'publishes/(?P<id>\d+)/$', views.PublishDetailVies.as_view(),name="publish_detail"),
     url(r'books/$',views.BookView.as_view()),
     url(r'books/(?P<id>\d+)/$',views.BookDetailView.as_view(),name="book_detail"),
+    url(r'authors/$',views.AuthorModelView.as_view({"get":"list","post":"create"}),name="author"),
+    url(r'authors/(?P<pk>\d+)/$', views.AuthorModelView.as_view({"get": "retrieve", "put": "update","delete":"destroy"}), name="author_detail"),
+    url(r'login/$',views.LoginView.as_view(), name="login"),
 ]
