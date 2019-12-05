@@ -77,8 +77,14 @@ class PublishDetailVies(APIView):
         Publish.objects.filter(pk=id).delete()
         return Response()
 
+# class TokenAuth(object):
+#     pass
+from .utils import TokenAuth
 
 class BookView(APIView):
+    # 定义认证类
+    # authentication_classes = [TokenAuth]
+
     def get(self,request):
         book_list = Book.objects.all()
         bs = BookModelSerializers(book_list,many=True,context={'request': request})

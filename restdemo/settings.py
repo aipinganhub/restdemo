@@ -122,3 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# rest_framework 权限
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":["app01.utils.TokenAuth",]
+}
